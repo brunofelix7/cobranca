@@ -1,21 +1,18 @@
-package com.algaworks.cobranca.model;
+package com.algaworks.cobranca.enumeration;
 
-public enum StatusTitulo {
+public enum TituloStatusEnum {
 	
 	RECEBIDO("Recebido"),
 	PENDENTE("Pendente");
 	
 	private String descricao;
 	
-	StatusTitulo(String descricao){
+	TituloStatusEnum(String descricao){
 		this.descricao = descricao;
 	}
 
 	public String getDescricao() {
 		return descricao;
 	}
-
-	
-	
 
 }

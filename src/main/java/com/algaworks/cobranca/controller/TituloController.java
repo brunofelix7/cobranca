@@ -10,47 +10,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.algaworks.cobranca.model.StatusTitulo;
+import com.algaworks.cobranca.enumeration.TituloStatusEnum;
 import com.algaworks.cobranca.model.Titulo;
-import com.algaworks.cobranca.repository.Titulos;
+import com.algaworks.cobranca.repository.TituloRepository;
 
 @Controller
 @RequestMapping("/titulos")
 public class TituloController {
 
-	
-	/* Coloca uma instância e autoriza para poder usar, se não vai dar NullPointerException */
+	private static final String VIEW_CADASTRO = "titulo/cadastro";
+	private static final String VIEW_LISTAGEM = "titulo/listagem";
+
 	@Autowired
-	private Titulos titulos;
-	
-	@RequestMapping("/novo")
+	private TituloRepository repository;
+
+	/**
+	 * Carrega a página de cadastro de título
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/novo")
 	public ModelAndView novo() {
-		ModelAndView mv = new ModelAndView("CadastroTitulo");
-		return mv;
+		return new ModelAndView(VIEW_CADASTRO);
 	}
-	
-	/* O Spring MVC já salva um objeto do tipo Título sem precisar passar os atributos 
-	 * como parâmetros no método. Basta colocar o mesmo nome dos atributos nos inputs
+
+	/**
+	 * Cadastra um novo título
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView salvar(Titulo titulo) {
-		titulos.save(titulo);
-		ModelAndView mv = new ModelAndView("CadastroTitulo");
+		repository.save(titulo);
+		ModelAndView mv = new ModelAndView(VIEW_CADASTRO);
 		mv.addObject("mensagem", "Salvo com sucesso!");
 		return mv;
 	}
-	
-	@RequestMapping
-	public String pesquisar(){
-		return "PesquisaTitulos";
+
+	/**
+	 * Carrega a página de lsitagem de títulos
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+	public String pesquisar() {
+		return VIEW_LISTAGEM;
 	}
-	
-	/*
+
+	/**
 	 * Retorna todos os meus enuns num array dinamicamente
 	 */
-	@ModelAttribute("todosStatusTitulo")		// Define o nome que eu quero chamar lá na View com o thymeleaf
-	public List<StatusTitulo> todosStatusTitulo(){
-		return Arrays.asList(StatusTitulo.values());
+	@ModelAttribute("todosStatusTitulo") // Define o nome que eu quero chamar lá na View com o thymeleaf
+	public List<TituloStatusEnum> todosStatusTitulo() {
+		return Arrays.asList(TituloStatusEnum.values());
 	}
-	
+
 }

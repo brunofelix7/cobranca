@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorator="LayoutPadrao">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/layout_padrao">
 <head>
-	<title>Pesquisa de títulos</title>
+<title>Pesquisa de títulos</title>
 </head>
 
 <!-- Tudo isso vai para dentro do meu layout padrão -->
@@ -12,10 +12,11 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div class="clearfix">
-	  			<h1 class="panel-title aw-titulo-panel">Pesquisa de títulos</h1>
-	  			<a class="btn btn-link aw-link-panel" href="/titulos/novo">Novo título</a>
-	  		</div>
-	  	</div>
+				<h1 class="panel-title aw-titulo-panel">Pesquisa de títulos</h1>
+				<a class="btn btn-link aw-link-panel" href="/titulos/novo">Novo
+					título</a>
+			</div>
+		</div>
 		<div class="panel-body">
 			<table class="table table-bordered table-striped">
 				<thead>
