@@ -2,8 +2,8 @@ package com.algaworks.cobranca.enumeration;
 
 public enum TituloStatusEnum {
 	
-	RECEBIDO("Recebido"),
-	PENDENTE("Pendente");
+	PENDENTE("Pendente"),
+	RECEBIDO("Recebido");
 	
 	private String descricao;
 	

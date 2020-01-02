@@ -11,6 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -26,15 +32,21 @@ public class Titulo {
 	@Column(name = "id")
 	private Long codigo;
 
+	@NotEmpty(message = "Descrição é obrigatória")
+	@Size(message = "A descrição não pode conter mais de 60 caracteres", max = 60)
 	@Column(name = "descricao")
 	private String descricao;
 
+	@NotNull(message = "Date de vencimento é obrigatória")
 	@DateTimeFormat(pattern = "dd/MM/yyyy") // Formata a data
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_vencimento")
 	private Date dataVencimento;
 
-	@NumberFormat(pattern = "#,##0.00") // Permite o usuário digitar , ao invés de . em valores decimais
+	@NotNull(message = "Valor é obrigatório")
+	@DecimalMin(message = "Valor não pode ser menor que 0,01", value = "0.01")
+	@DecimalMax(message = "Valor não pode ser maior que 9.999.999,99", value = "9999999.99")
+	@NumberFormat(pattern = "#,##0.00")
 	@Column(name = "valor")
 	private BigDecimal valor;
 
