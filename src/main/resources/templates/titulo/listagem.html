@@ -4,7 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="layout/layout_padrao">
 <head>
-<title>Pesquisa de títulos</title>
+	<title>Pesquisa de títulos</title>
 </head>
 
 <!-- Tudo isso vai para dentro do meu layout padrão -->
@@ -13,8 +13,7 @@
 		<div class="panel-heading">
 			<div class="clearfix">
 				<h1 class="panel-title aw-titulo-panel">Pesquisa de títulos</h1>
-				<a class="btn btn-link aw-link-panel" href="/titulos/novo">Novo
-					título</a>
+				<a class="btn btn-link aw-link-panel" href="/titulos/novo">Novo título</a>
 			</div>
 		</div>
 		<div class="panel-body">
@@ -30,8 +29,21 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr th:each="titulo : ${titulos}">
+						<td class="text-center col-md-1" th:text="${titulo.codigo}"></td>
+						<td th:text="${titulo.descricao}"></td>
+						<td class="text-center col-md-2" th:text="${{titulo.dataVencimento}}"></td>
+						<td class="text-right col-md-2" th:text="|R$${{titulo.valor}}|"></td>
+						<td class="text-center col-md-2">
+							<span class="label" th:text="${titulo.status.descricao}"
+									th:classappend="${titulo.pendente} ? 'label-danger' : 'label-success'"></span>
+						</td>
+						<td class="col-md-1">
+							
+						</td>
+					</tr>
 					<tr>
-						<td colspan="6">Nenhum título encontrado!</td>
+						<td colspan="6" th:if="${#lists.isEmpty(titulos)}">Nenhum título encontrado.</td>
 					</tr>
 				</tbody>
 			</table>

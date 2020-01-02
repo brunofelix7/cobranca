@@ -47,8 +47,11 @@ public class TituloController {
 	 * Carrega a página de lsitagem de títulos
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public String pesquisar() {
-		return VIEW_LISTAGEM;
+	public ModelAndView pesquisar() {
+		List<Titulo> titulos = repository.findAll();
+		ModelAndView mv = new ModelAndView(VIEW_LISTAGEM);
+		mv.addObject("titulos", titulos);
+		return mv;
 	}
 
 	/**

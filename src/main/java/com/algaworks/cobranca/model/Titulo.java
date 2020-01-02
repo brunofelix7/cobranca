@@ -95,6 +95,10 @@ public class Titulo {
 		this.status = status;
 	}
 
+	public boolean isPendente() {
+		return TituloStatusEnum.PENDENTE.equals(this.status);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
