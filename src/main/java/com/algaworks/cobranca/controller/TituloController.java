@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,9 +33,7 @@ public class TituloController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/novo")
 	public ModelAndView novo() {
-		ModelAndView mv = new ModelAndView(VIEW_CADASTRO);
-		mv.addObject(new Titulo());
-		return mv;
+		return new ModelAndView(VIEW_CADASTRO).addObject(new Titulo());
 	}
 
 	/**
@@ -43,10 +42,9 @@ public class TituloController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
 		if(errors.hasErrors()) {
-			System.out.println(errors.getAllErrors());
 			return VIEW_CADASTRO;
 		}
-		repository.save(titulo);
+		this.repository.save(titulo);
 		attributes.addFlashAttribute("mensagem", "Salvo com sucesso!");
 		return "redirect:/titulos/novo";
 	}
@@ -56,10 +54,19 @@ public class TituloController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView pesquisar() {
-		List<Titulo> titulos = repository.findAll();
+		List<Titulo> titulos = this.repository.findAll();
 		ModelAndView mv = new ModelAndView(VIEW_LISTAGEM);
 		mv.addObject("titulos", titulos);
 		return mv;
+	}
+	
+	/**
+	 * Edita um título
+	 */
+	@RequestMapping(method = RequestMethod.GET, path = "{id}")
+	public ModelAndView editar(@PathVariable("id") Titulo titulo) {
+		//Titulo titulo = this.repository.findOne(id);
+		return new ModelAndView(VIEW_CADASTRO).addObject(titulo);
 	}
 
 	/**
