@@ -17,6 +17,34 @@ $('#confirmacaoExclusaoModal').on('show.bs.modal', function(event) {
 });
 
 $(function() {
+	//	Adiciona o tooltip de legenda dos botões
 	$('[rel="tooltip"]').tooltip();
+	
+	//	Adiciona máscara monetária
 	$('.js-money').maskMoney({decimal: ',', thousands: '.', allowZero: true});
+	
+	//	Recebe um título e atualiza no banco de dados
+	$('.js-atualizar-status').on('click', function(event){
+		//	Para o comportamento padrão do link
+		event.preventDefault();
+		
+		var button = $(event.currentTarget);
+		var urlReceber = button.attr('href');
+		
+		var response = $.ajax({
+			url: urlReceber,
+			type: 'PUT'
+		});
+		
+		response.done(function(e){
+			var id = button.data('codigo');
+			$('[data-role=' + id + ']').html('<span class="label label-success">' + e + '</span>');
+			button.hide();
+		});
+		
+		response.fail(function(e){
+			console.log(e);
+			alert("Erro ao receber título");
+		});
+	});
 });

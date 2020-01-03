@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.cobranca.enumeration.TituloStatusEnum;
 import com.algaworks.cobranca.model.Titulo;
 import com.algaworks.cobranca.repository.TituloRepository;
+import com.algaworks.cobranca.service.TituloService;
 
 @Controller
 @RequestMapping("/titulos")
@@ -28,6 +29,9 @@ public class TituloController {
 
 	@Autowired
 	private TituloRepository repository;
+
+	@Autowired
+	private TituloService service;
 
 	/**
 	 * Carrega a página de cadastro de título
@@ -46,11 +50,11 @@ public class TituloController {
 			return VIEW_CADASTRO;
 		}
 		try {
-			this.repository.save(titulo);
+			this.service.salvar(titulo);
 			attributes.addFlashAttribute("mensagem", "Salvo com sucesso!");
 			return "redirect:/titulos/novo";
-		} catch (DataIntegrityViolationException e) {
-			errors.rejectValue("dataVencimento", null, "Formato de data inválido");
+		} catch (IllegalArgumentException e) {
+			errors.rejectValue("dataVencimento", null, e.getMessage());
 			return VIEW_CADASTRO;
 		}
 	}
@@ -80,11 +84,19 @@ public class TituloController {
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, path = "{id}")
 	public String remover(@PathVariable Long id, RedirectAttributes attributes) {
-		this.repository.delete(id);
+		this.service.excluir(id);
 		attributes.addFlashAttribute("mensagem", "Titulo excluído com sucesso!");
 		return "redirect:/titulos";
 	}
-
+	
+	/**
+	 * 
+	 */
+	@RequestMapping(method = RequestMethod.PUT, path = "/{id}/receber")
+	public @ResponseBody String receber(@PathVariable("id") Long id) {
+		return this.service.receber(id);
+	}
+	
 	/**
 	 * Retorna todos os meus enuns num array dinamicamente
 	 */
