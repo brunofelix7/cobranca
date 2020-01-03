@@ -68,6 +68,16 @@ public class TituloController {
 		//Titulo titulo = this.repository.findOne(id);
 		return new ModelAndView(VIEW_CADASTRO).addObject(titulo);
 	}
+	
+	/**
+	 * Exclui um título
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, path = "{id}")
+	public String remover(@PathVariable Long id, RedirectAttributes attributes) {
+		this.repository.delete(id);
+		attributes.addFlashAttribute("mensagem", "Titulo excluído com sucesso!");
+		return "redirect:/titulos";
+	}
 
 	/**
 	 * Retorna todos os meus enuns num array dinamicamente

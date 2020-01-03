@@ -10,8 +10,9 @@
 <section layout:fragment="conteudo">
 	<form class="form-horizontal" method="POST" action="/titulos" th:object="${titulo}">
 		
-		<!-- Mensagens -->
-		<div layout:include="layout/mensagem"></div>
+		<!-- MENSAGENS -->
+		<div layout:include="layout/mensagem_sucesso"></div>
+		<div layout:include="layout/mensagem_erro"></div>
 		
 		<div class="panel panel-default">
 			<input type="hidden" th:field="*{codigo}" />
