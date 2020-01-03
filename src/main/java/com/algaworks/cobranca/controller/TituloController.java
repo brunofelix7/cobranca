@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -41,12 +42,17 @@ public class TituloController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
-		if(errors.hasErrors()) {
+		if (errors.hasErrors()) {
 			return VIEW_CADASTRO;
 		}
-		this.repository.save(titulo);
-		attributes.addFlashAttribute("mensagem", "Salvo com sucesso!");
-		return "redirect:/titulos/novo";
+		try {
+			this.repository.save(titulo);
+			attributes.addFlashAttribute("mensagem", "Salvo com sucesso!");
+			return "redirect:/titulos/novo";
+		} catch (DataIntegrityViolationException e) {
+			errors.rejectValue("dataVencimento", null, "Formato de data inválido");
+			return VIEW_CADASTRO;
+		}
 	}
 
 	/**
@@ -59,16 +65,16 @@ public class TituloController {
 		mv.addObject("titulos", titulos);
 		return mv;
 	}
-	
+
 	/**
 	 * Edita um título
 	 */
 	@RequestMapping(method = RequestMethod.GET, path = "{id}")
 	public ModelAndView editar(@PathVariable("id") Titulo titulo) {
-		//Titulo titulo = this.repository.findOne(id);
+		// Titulo titulo = this.repository.findOne(id);
 		return new ModelAndView(VIEW_CADASTRO).addObject(titulo);
 	}
-	
+
 	/**
 	 * Exclui um título
 	 */
