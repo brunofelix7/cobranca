@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.cobranca.enumeration.TituloStatusEnum;
 import com.algaworks.cobranca.model.Titulo;
-import com.algaworks.cobranca.repository.TituloRepository;
+import com.algaworks.cobranca.repository.filter.TituloFilter;
 import com.algaworks.cobranca.service.TituloService;
 
 @Controller
@@ -26,9 +26,6 @@ public class TituloController {
 
 	private static final String VIEW_CADASTRO = "titulo/cadastro";
 	private static final String VIEW_LISTAGEM = "titulo/listagem";
-
-	@Autowired
-	private TituloRepository repository;
 
 	@Autowired
 	private TituloService service;
@@ -63,8 +60,8 @@ public class TituloController {
 	 * Carrega a página de lsitagem de títulos
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView pesquisar() {
-		List<Titulo> titulos = this.repository.findAll();
+	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro) { //@RequestParam(defaultValue = "%") String descricao
+		List<Titulo> titulos = this.service.filtrar(filtro);
 		ModelAndView mv = new ModelAndView(VIEW_LISTAGEM);
 		mv.addObject("titulos", titulos);
 		return mv;
@@ -90,7 +87,7 @@ public class TituloController {
 	}
 	
 	/**
-	 * 
+	 * Recebe um título
 	 */
 	@RequestMapping(method = RequestMethod.PUT, path = "/{id}/receber")
 	public @ResponseBody String receber(@PathVariable("id") Long id) {
