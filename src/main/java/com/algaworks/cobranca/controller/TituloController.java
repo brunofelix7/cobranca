@@ -31,7 +31,7 @@ public class TituloController {
 	private TituloService service;
 
 	/**
-	 * Carrega a página de cadastro de título
+	 * Carrega a página de cadastro de titulo
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/novo")
 	public ModelAndView novo() {
@@ -39,7 +39,7 @@ public class TituloController {
 	}
 
 	/**
-	 * Cadastra um novo título
+	 * Processa o formulário da página de cadastro de titulo
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String salvar(@Validated Titulo titulo, Errors errors, RedirectAttributes attributes) {
@@ -57,7 +57,7 @@ public class TituloController {
 	}
 
 	/**
-	 * Carrega a página de lsitagem de títulos
+	 * Carrega a página de lsitagem de titulos e pesquisa
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView pesquisar(@ModelAttribute("filtro") TituloFilter filtro) { //@RequestParam(defaultValue = "%") String descricao
@@ -68,7 +68,7 @@ public class TituloController {
 	}
 
 	/**
-	 * Edita um título
+	 * Carrega a página de atualização de titulo
 	 */
 	@RequestMapping(method = RequestMethod.GET, path = "{id}")
 	public ModelAndView editar(@PathVariable("id") Titulo titulo) {
@@ -77,7 +77,7 @@ public class TituloController {
 	}
 
 	/**
-	 * Exclui um título
+	 * Remove um titulo
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, path = "{id}")
 	public String remover(@PathVariable Long id, RedirectAttributes attributes) {
@@ -87,9 +87,9 @@ public class TituloController {
 	}
 	
 	/**
-	 * Recebe um título
+	 * Altera o status do titulo via AJAX
 	 */
-	@RequestMapping(method = RequestMethod.PUT, path = "/{id}/receber")
+	@RequestMapping(method = RequestMethod.GET, path = "/{id}/receber")
 	public @ResponseBody String receber(@PathVariable("id") Long id) {
 		return this.service.receber(id);
 	}

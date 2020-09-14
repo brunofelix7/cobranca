@@ -33,7 +33,7 @@ $(function() {
 		
 		var response = $.ajax({
 			url: urlReceber,
-			type: 'PUT'
+			type: 'GET'
 		});
 		
 		response.done(function(e){
